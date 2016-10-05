@@ -1,0 +1,21 @@
+# 1. depend on ubuntu:12.04
+FROM ubuntu:12.04
+
+# 2. import mongodb public GPG key 
+RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10
+RUN echo 'deb http://downloads-distro.mongodb.org/repo/ubuntu-upstart dist 10gen' | tee /etc/apt/sources.list.d/10gen.list
+
+# 3. update apt-get sources
+RUN apt-get update
+
+# 4. install mongodb
+RUN apt-get install -y -q mongodb-org
+
+# 5. create the mongoldb data directory
+RUN mkdir -p /data/db
+
+# 6. export port 27107 from the container to the host
+EXPOSE 27017
+
+# 7. set user/bin/mongod as the dockerized entry-point application
+ENTRYPOINT usr/bin/mongod
